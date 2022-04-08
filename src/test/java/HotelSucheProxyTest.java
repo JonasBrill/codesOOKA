@@ -1,6 +1,7 @@
 import org.bonn.ooka.buchungssystem.ss2022.DBAccess;
 import org.bonn.ooka.buchungssystem.ss2022.caching.CachingImp;
 import org.bonn.ooka.buchungssystem.ss2022.hotel_suche.HotelSucheProxy;
+import org.bonn.ooka.buchungssystem.ss2022.logging.Logger;
 import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ class HotelSucheProxyTest {
 	@BeforeEach
 	void setUp() {
 		DBAccess dbAccess = new DBAccess();
-		this.proxy = new HotelSucheProxy(dbAccess, new CachingImp());
+		this.proxy = new HotelSucheProxy(dbAccess, new Logger(),new CachingImp());
 	}
 
 	@Test
@@ -65,7 +66,7 @@ class HotelSucheProxyTest {
 	@DisplayName ("Search for all hotels without cache | expect no nullpointe-exception")
 	void searchForAllHotelsWithoutCacheExpectNoNullpointeException() {
 		DBAccess dbAccess = new DBAccess();
-		HotelSucheProxy proxy = new HotelSucheProxy(dbAccess, null);
+		HotelSucheProxy proxy = new HotelSucheProxy(dbAccess, new Logger(), null);
 
 		proxy.openSession();
 		assertDoesNotThrow(() -> proxy.getHotelByName("*"));
