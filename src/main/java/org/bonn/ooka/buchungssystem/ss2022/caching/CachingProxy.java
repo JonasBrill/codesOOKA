@@ -2,21 +2,29 @@ package org.bonn.ooka.buchungssystem.ss2022.caching;
 
 import java.util.List;
 
+/**
+ * @author Adrian Bähr & Jonas Brill
+ */
+
 public class CachingProxy implements Caching {
 
-	private final CachingImp cachingImp;
+	private final Caching cachingImp;
 
-	public CachingProxy(CachingImp cachingImp) {
+	public CachingProxy(Caching cachingImp) {
 		this.cachingImp = cachingImp;
 	}
 
 	@Override
 	public void cacheResult(String key, List<Object> value) {
-		cachingImp.cacheResult(key, value);
+		if (cachingImp != null)
+			cachingImp.cacheResult(key, value);
 	}
 
 	@Override
 	public List<Object> fetchResult(String key) {
-		return cachingImp.fetchResult(key);
+		if (cachingImp != null)
+			return cachingImp.fetchResult(key);
+		else
+			return null;
 	}
 }

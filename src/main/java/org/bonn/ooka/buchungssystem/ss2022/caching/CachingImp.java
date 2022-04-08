@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Adrian Bähr & Jonas Brill
+ */
+
 public class CachingImp implements Caching {
 	Map<String, List<Object>> values;
 
@@ -16,6 +20,6 @@ public class CachingImp implements Caching {
 	}
 
 	public List<Object> fetchResult(String key) {
-		return this.values.get(key);
+		return this.values.getOrDefault(key, null);
 	}
 }

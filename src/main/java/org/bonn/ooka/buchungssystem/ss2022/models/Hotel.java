@@ -1,5 +1,9 @@
 package org.bonn.ooka.buchungssystem.ss2022.models;
 
+/**
+ * @author Adrian Bähr & Jonas Brill
+ */
+
 public class Hotel {
 	private final int id;
 	private final String name;

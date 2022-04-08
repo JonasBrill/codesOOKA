@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Adrian Bähr & Jonas Brill
+ */
+
 public class HotelRetrieval implements HotelSuche {
 
 	private final DBAccess dbAccess;
@@ -21,10 +25,8 @@ public class HotelRetrieval implements HotelSuche {
 	@Override
 	public Hotel[] getHotelByName(String name) {
 
-		try {
-			return this.cache.fetchResult(name).toArray(new Hotel[0]);
-		} catch (Exception e) {
-			System.err.println("Cache miss");
+		List<Object> hotelsTmp = this.cache.fetchResult(name);
+		if (hotelsTmp == null) {
 			List<String> hotelListAsStrings = dbAccess.getObjects(0, name);
 
 			List<Hotel> hotels = new ArrayList<>();
@@ -34,6 +36,7 @@ public class HotelRetrieval implements HotelSuche {
 			this.cache.cacheResult(name, hotels.stream().map(Object.class::cast).collect(Collectors.toList()));
 			return hotels.toArray(new Hotel[0]);
 		}
+		return hotelsTmp.toArray(new Hotel[0]);
 	}
 
 	@Override

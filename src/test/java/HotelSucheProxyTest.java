@@ -1,7 +1,5 @@
 import org.bonn.ooka.buchungssystem.ss2022.DBAccess;
 import org.bonn.ooka.buchungssystem.ss2022.caching.CachingImp;
-import org.bonn.ooka.buchungssystem.ss2022.caching.CachingProxy;
-import org.bonn.ooka.buchungssystem.ss2022.hotel_suche.HotelRetrieval;
 import org.bonn.ooka.buchungssystem.ss2022.hotel_suche.HotelSucheProxy;
 import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * @author Adrian Bähr & Jonas Brill
+ */
 
 class HotelSucheProxyTest {
 
@@ -20,9 +21,7 @@ class HotelSucheProxyTest {
 	@BeforeEach
 	void setUp() {
 		DBAccess dbAccess = new DBAccess();
-		CachingProxy cachingProxy = new CachingProxy(new CachingImp());
-		HotelRetrieval hotelRetrieval = new HotelRetrieval(dbAccess, cachingProxy);
-		this.proxy = new HotelSucheProxy(hotelRetrieval);
+		this.proxy = new HotelSucheProxy(dbAccess, new CachingImp());
 	}
 
 	@Test
@@ -60,5 +59,17 @@ class HotelSucheProxyTest {
 
 		assertTrue(hotels2.length > 0);
 		Arrays.stream(hotels2).forEach(hotel -> assertEquals("Maritim", hotel.getName()));
+	}
+
+	@Test
+	@DisplayName ("Search for all hotels without cache | expect no nullpointe-exception")
+	void searchForAllHotelsWithoutCacheExpectNoNullpointeException() {
+		DBAccess dbAccess = new DBAccess();
+		HotelSucheProxy proxy = new HotelSucheProxy(dbAccess, null);
+
+		proxy.openSession();
+		assertDoesNotThrow(() -> proxy.getHotelByName("*"));
+		assertTrue(proxy.getHotelByName("*").length > 0);
+		proxy.closeSession();
 	}
 }
