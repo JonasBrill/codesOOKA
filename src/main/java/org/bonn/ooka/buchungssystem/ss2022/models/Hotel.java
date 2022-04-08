@@ -31,6 +31,11 @@ public class Hotel {
 		return ort;
 	}
 
+	@Override
+	public String toString() {
+		return "Hotel{" + "id=" + id + ", name='" + name + '\'' + ", ort='" + ort + '\'' + ", sterne='" + sterne + '\'' + ", kontakt='" + kontakt + '\'' + '}';
+	}
+
 	public String getSterne() {
 		return sterne;
 	}
