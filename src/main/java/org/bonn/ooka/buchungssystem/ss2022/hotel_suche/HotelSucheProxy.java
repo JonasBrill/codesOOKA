@@ -2,7 +2,7 @@ package org.bonn.ooka.buchungssystem.ss2022.hotel_suche;
 
 import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
 
-public class HotelSucheProxy implements HotelSuche{
+public class HotelSucheProxy implements HotelSuche {
 
 	private final HotelRetrieval hotelRetrieval;
 
